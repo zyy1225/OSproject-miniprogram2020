@@ -1,0 +1,7 @@
+<image src="{{bg}}" class="bg"></image>
+<view class="container">
+  <view class="content">
+    <view class="time">{{time}}<text style="margin-left:10rpx;">{{week}}</text></view>
+    <image src="{{repotrBg}}" class="report-bg" bindtap="report"></image>
+  </view>
+</view>
