@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="miniprogram.server.mapper.WxMpBindInfoMapper" >
+  <resultMap id="BaseResultMap" type="miniprogram.server.beans.WxMpBindInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="wx_uid" property="wxUid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="isbind" property="isbind" jdbcType="INTEGER" />
+    <result column="bind_date" property="bindDate" jdbcType="TIMESTAMP" />
+    <result column="unbind_date" property="unbindDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByUserId" resultType="miniprogram.server.beans.Organization">
+    select o.id, o.corpname, o.corp_code from wx_mp_bind_info w left join organization o on w.org_id = o.corp_code where w.wx_uid = #{wxUid} and w.isbind = 1
+  </select>
+
+  <select id="selectByOrgIdAndUid" resultMap="BaseResultMap">
+    select * from wx_mp_bind_info where wx_uid = #{wxUid} and org_id = #{orgId} and isbind = 1
+  </select>
+
+  <select id="isBindByParam" resultMap="BaseResultMap">
+    select * from wx_mp_bind_info where wx_uid = #{wxUid} and org_id = #{orgId} and username = #{userid} and isbind = 1
+  </select>
+
+  <select id="mySelect" resultMap="BaseResultMap" parameterType="miniprogram.server.beans.WxMpBindInfo">
+    select * from wx_mp_bind_info where 1=1
+     <if test="wxUid != null">
+       and wx_uid = #{wxUid}
+     </if>
+      <if test="orgId != null">
+        and org_id = #{orgId}
+      </if>
+      <if test="username != null">
+        and username = #{username}
+      </if>
+      <if test="isbind != null">
+        and isbind = #{isbind}
+      </if>
+  </select>
+
+  <update id="updateStatus">
+    update wx_mp_bind_info set isbind = 0, unbind_date = now() where wx_uid = #{wxUid}
+  </update>
+
+  <insert id="insert" parameterType="miniprogram.server.beans.WxMpBindInfo">
+    insert into wx_mp_bind_info(org_id, wx_uid, username, isbind)
+    values (#{orgId, jdbcType=INTEGER},
+            #{wxUid, jdbcType=INTEGER},
+            #{username, jdbcType=VARCHAR},
+            #{isbind, jdbcType=INTEGER})
+  </insert>
+
+</mapper>
