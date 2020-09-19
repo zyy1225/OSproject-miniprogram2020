@@ -1,0 +1,96 @@
+1.基础知识学习
+由于今天考试的时候第三题用到了并查集，因为了解不是很深刻，所以花了很长时间。因此对并查集进行一下了解和学习。
+https://zhuanlan.zhihu.com/p/93647900
+并查集，就是一种数据结构，虽然有些像树，但是我认为是一个数组，以数组的底为序号，存储的是父亲结点。
+而只要是并查集的问题，就是三步，第一是初始化，第二是合并，第三是查询。
+Find()
+Union()
+Init()
+第一步初始化：
+	int fa[MAXN];
+inline void init(int n){
+    	for (int i = 1; i <= n; ++i)
+       			 fa[i] = i;}
+第二步查询
+int find(int x){
+    if(fa[x] == x)
+        return x;
+    else
+        return find(fa[x]);}
+使用递归的方法，
+第三步合并
+inline void merge(int i, int j){
+    fa[find(i)] = find(j);}
+
+如果合并都到根节点的话，就会很影响效率，所以进一步的合并为路径压缩，即把沿途的节点的父节点都设为根节点，这样会有很多树，会简化查询。
+int find(int x){
+    if(x == fa[x])
+        return x;
+    else{
+        fa[x] = find(fa[x]);  //父节点设为根节点        
+return fa[x];         //返回父节点    }}
+
+如果这样的话可能会造成所有的并查集都是两层，还可以设定层数。
+初始化（按秩合并）
+inline void init(int n){
+    for (int i = 1; i <= n; ++i)
+    {
+        fa[i] = i;
+        rank[i] = 1;
+    }}
+合并（按秩合并）
+inline void merge(int i, int j){
+    int x = find(i), y = find(j);    //先找到两个根节点    if (rank[x] <= rank[y])
+        fa[x] = y;
+    else
+        fa[y] = x;
+    if (rank[x] == rank[y] && x != y)
+        rank[y]++;                   //如果深度相同且根节点不同，则新的根节点的深度+1}
+
+2.代码
+题目为今天测试的第三题，大体意思是给出所有教室的经过人员，找到0号的所有接触者，
+#include<iostream>
+using namespace std;
+int source[30001];
+int find(int x){
+	if(x != source[x]){
+		int temp = find(source[x]);
+		source[x] = temp;
+	}
+	return source[x];
+}
+
+Void union(int stufs, int stu){
+int s1 = find(stufs);
+int s2 = find(stu);
+	source[s1] = source[s2];
+}
+
+int main(){
+	int n, m;
+	while(1){
+		cin>>n;
+		cin>>m;
+		int stufs,k,stu; 
+		if(n == 0 && m == 0) break;
+		for(int i = 0; i < n; ++i){
+			source[i] = i;
+		} 
+		for(int i = 0; i < m; ++i){
+			cin >> k;
+			cin >> stufs;
+			
+			for(int j = 1; j < k; ++j){
+				cin >> stu;
+				
+			}
+		} 
+		int source0 = find(0);
+		int sum = 0;
+		for(int i = 0; i< n; ++i){
+			if(find(i)== source0) sum++;
+		}
+		cout << sum <<endl; 
+	}
+	return 1;
+}
