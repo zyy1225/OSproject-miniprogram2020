@@ -1,0 +1,75 @@
+1.基础知识
+二维码是如何生成的？
+在今天进宿舍的时候忽然想知道二维码是怎么生成的，于是搜了一下。
+参考网址：https://www.cnblogs.com/alantu2018/p/8504373.html
+
+
+部分功能描述：
+Position Detection Pattern是定位图案，用于标记二维码的矩形大小。这三个定位图案有白边叫Separators for Postion Detection Patterns。之所以三个而不是四个意思就是三个就可以标识一个矩形了。
+Timing Patterns也是用于定位的。原因是二维码有40种尺寸，尺寸过大了后需要有根标准线，不然扫描的时候可能会扫歪了。
+Alignment Patterns 只有Version 2以上（包括Version2）的二维码需要这个东东，同样是为了定位用的。
+Format Information 存在于所有的尺寸中，用于存放一些格式化数据的，定义编码格式
+Version Information 在 >= Version 7以上，需要预留两块3 x 6的区域存放一些版本信息。
+除了上述的那些地方，剩下的地方存放 Data Code 数据码 和 Error Correction Code 纠错码
+总结：
+二维码的组成是由数据码，纠错码，格式码，定位码组成，将其变成0,1格式，期间的部分步骤是，数据码等其他一些码和纠错码重排、补齐、穿插，构成上图的形式，然后剩余部分使用mask算法，和上面的码进行XOR操作，最终生成目标二维码。自动更新是设置了一个定时器，每次重新生成
+
+二维码识别：识别的二维码是通过二维码的黑白亮点
+
+
+2.代码
+题目地址：https://leetcode-cn.com/problems/two-sum/
+
+
+答案：
+两次迭代：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+           int n = nums.size();
+           vector<int> v;
+           map<int,int> m;
+           for(int i = 0; i < n; ++i){
+               m.insert(pair<int,int>(nums[i],i));
+              //m[i] = nums[i];
+           }
+           for(int i = 0; i < n; ++i){
+               int aim = target - nums[i];
+               map<int,int>::iterator iter = m.find(aim);
+               if(iter != m.end()){
+                    if( iter->second != i) {
+                        v.push_back(i>iter->second?iter->second:i);
+                        v.push_back(i<iter->second?iter->second:i);
+                        return v;
+                    }
+               }
+               
+           }
+           return v;
+    }
+};
+一次迭代：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+           int n = nums.size();
+           vector<int> v;
+           map<int,int> m;
+           for(int i = 0; i < n; ++i){
+               int aim = target - nums[i];
+               m.insert(pair<int,int>(nums[i],i));
+               map<int,int>::iterator iter = m.find(aim);
+               if(iter != m.end()){
+                    if( iter->second != i) {
+                        v.push_back(i>iter->second?iter->second:i);
+                        v.push_back(i<iter->second?iter->second:i);
+                        return v;
+                    }
+               }
+              //m[i] = nums[i];
+           }
+           return v;
+    }
+}；
+3.工作任务
+上传个人学习成果。
