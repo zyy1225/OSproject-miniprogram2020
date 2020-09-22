@@ -1,0 +1,52 @@
+1.基础知识
+web1.0和web2.0的区别：web1.0是基于浏览器，看到的是已经定制好的内容，而web2.0是基于用户的，所有参与者都可以贡献内容
+cpu和gpu的区别：
+一个是计算机的核心，一个是显卡的核心，总结来说
+gpu:数量大，计算简单，重复多次
+cpu :数量不那么大，计算复杂，重复性低
+
+2.代码
+题目：https://leetcode-cn.com/problems/3sum/
+  
+答案：
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int>> v;
+        if(nums.size() < 3) return v;
+        int aim;
+
+        for(int i = 0; i < nums.size(); ++i){
+            aim = nums[i]*(-1); 
+
+            if(nums[i]>0) return v;     //大于零的肯定不满足
+            
+            if(i>0 && nums[i]==nums[i-1]) continue;
+            
+            int j = i + 1, k = nums.size()-1 ;
+            while(j < k){
+                if(nums[j]+nums[k]<aim) {               
+                    ++j;
+                    continue;                  
+                }
+                else if(nums[j]+nums[k]>aim) { 
+                    --k;
+                    continue;                   
+                }
+                else{
+                    v.push_back(vector<int>{nums[i],nums[j],nums[k]});
+                    while(j<k && nums[j]==nums[j+1]) ++j;
+                    while(j<k && nums[k]==nums[k-1]) --k;
+                    ++j;
+                    --k;//相等之后需要同时改变
+                }
+                
+            }  
+        }
+        return v;
+    }
+};
+
+3.开源贡献
+提交个人学习成果
