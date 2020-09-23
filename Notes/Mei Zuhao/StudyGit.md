@@ -2,7 +2,7 @@
 
 ## 基本操作
 
-![git-command](C:\Users\MayZoohow\Desktop\git-command.jpg)
+![git](https://raw.githubusercontent.com/zyy1225/OSproject-miniprogram2020/master/Notes/Mei%20Zuhao/pictures/git.jpg)
 
 - workspace：工作区
 - staging area：暂存区/缓存区
