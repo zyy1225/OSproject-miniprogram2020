@@ -25,6 +25,7 @@ $ git add . #添加当前目录下的所有文件到暂存区
 $ git branch #显示分支一览表
 $ git branch feature-A #创建feature-A分支
 $ git checkout feature-A #将当前分支切换为feature-A 分支
+$ git push origin feature-A -f #本地强制上传到远程feature-A，把远程的覆盖
 ```
 
 
