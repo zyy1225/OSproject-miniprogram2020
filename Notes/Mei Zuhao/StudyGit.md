@@ -1,9 +1,11 @@
 # 创建仓库命令
 
 $ git init
+
 初始化仓库
 
 $ git clone
+
 拷贝一份远程仓库，即下载一个项目
 
 $ git status
