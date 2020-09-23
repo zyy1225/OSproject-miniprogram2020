@@ -1,5 +1,10 @@
+# 创建仓库命令
+
 $ git init
 初始化仓库
+
+$ git clone
+拷贝一份远程仓库，即下载一个项目
 
 $ git status
 查看仓库的状态
@@ -20,3 +25,10 @@ $ git branch feature-A
 $ git checkout feature-A
 将当前分支切换为feature-A 分支
 
+# 文件操作
+
+$ mkdir dirName
+创建一个名为dirName的文件夹
+
+$ mkdir -p dirName/dirSub
+在dirName目录下创建dirSub目录，-p代表如果dirName不存在，则新建一个
