@@ -16,6 +16,9 @@ $ git clone <url> #拷贝一份远程仓库，即下载一个项目
 
 $ git status #查看仓库的状态
 
+$ git pull origin master:feature-A #将远程主机origin的master分支拉取过来，与本地的feature-A分支合并
+$ git pull origin master #如果远程分支是与当前分支合并，则冒号后面的部分可省略
+
 $ git diff #比较工作区中的该文件与暂存区或版本库最后一次提交中的区别
 
 $ git add [file1] [file2] ... #添加一个或多个文件到暂存区
@@ -25,6 +28,8 @@ $ git add . #添加当前目录下的所有文件到暂存区
 $ git branch #显示分支一览表
 $ git branch feature-A #创建feature-A分支
 $ git checkout feature-A #将当前分支切换为feature-A 分支
+$ git checkout -b (feature-A) #创建新分支feature-A并立即切换到该分支下
+
 $ git push origin feature-A -f #本地强制上传到远程feature-A，把远程的覆盖
 
 $ git merge feature-B #把当前所在分支与feature-B分支合并
