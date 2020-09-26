@@ -25,10 +25,14 @@ $ git add [file1] [file2] ... #添加一个或多个文件到暂存区
 $ git add [dir] #添加指定目录到暂存区，包括子目录
 $ git add . #添加当前目录下的所有文件到暂存区
 
+$ git commit -m 'message' #提交暂存区到本地仓库中，message是备注信息
+$ git commit [file1] [file2] ... -m 'message' #提交暂存区的指定文件到本地仓库中
+$ git commit -a #-a参数设置修改文件后不需要执行git add命令，直接提交
+
 $ git branch #显示分支一览表
 $ git branch feature-A #创建feature-A分支
 $ git checkout feature-A #将当前分支切换为feature-A 分支
-$ git checkout -b (feature-A) #创建新分支feature-A并立即切换到该分支下
+$ git checkout -b feature-A #创建新分支feature-A并立即切换到该分支下
 
 $ git push origin feature-A -f #本地强制上传到远程feature-A，把远程的覆盖
 
