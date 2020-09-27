@@ -1,0 +1,76 @@
+一、基础知识
+Python部分正则表达式：
+https://deerchao.cn/tutorials/regex/regex.htm
+元字符：
+. 	匹配除换行符以外的任意字符
+\w 	匹配字母或数字或下划线或汉字
+\s 	匹配任意的空白符
+\d 	匹配数字
+\b 	匹配单词的开始或结束
+^ 	匹配字符串的开始
+$ 	匹配字符串的结束
+字符转义
+* 	重复零次或更多次
++ 	重复一次或更多次
+? 	重复零次或一次
+{n} 	重复n次
+{n,} 	重复n次或更多次
+{n,m} 	重复n到m次
+字符反义：
+\W 	匹配任意不是字母，数字，下划线，汉字的字符
+\S 	匹配任意不是空白符的字符
+\D 	匹配任意非数字的字符
+\B 	匹配不是单词开头或结束的位置
+[^x] 	匹配除了x以外的任意字符
+[^aeiou] 	匹配除了aeiou这几个字母以外的任意字符
+
+BeautifulSoup4将复杂HTML文档转换成一个复杂的树形结构,每个节点都是Python对象。
+代码
+https://leetcode-cn.com/problems/permutations/
+对回溯法问题进行了学习掌握了基本框架
+知识点：
+框架：
+result = []
+def backtrack(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
+    
+    for 选择 in 选择列表:
+        做选择
+        backtrack(路径, 选择列表)
+        撤销选择
+
+
+代码：
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int> > v;//存放所有答案
+        vector<int> track;//存放一个答案
+        backtrack(v,nums,track);
+        return v;
+    }
+
+    void backtrack(vector<vector<int>>& v,vector<int>& nums,vector<int>& track){
+        if(track.size()==nums.size()) {
+            v.push_back(track);
+            return;
+        }//如果满了，说明是答案，写入
+        for(int i = 0; i < nums.size(); ++i){
+            vector<int>::iterator it = find(track.begin(),track.end(),nums[i]);
+            if(it != track.end()) continue;//如果重复了，跳出循环
+            track.push_back(nums[i]);
+            backtrack(v,nums,track);//下一层
+            track.pop_back();
+        }
+        return;//上一层
+
+    }
+
+};
+开源任务
+听了开源社的课程，并提交了自己的个人学习总结
+
+
