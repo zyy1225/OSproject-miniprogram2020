@@ -1,0 +1,67 @@
+一、基础知识
+-Ox(x取123)主要是对代码大小的优化，我们基本不用做更多的关心。 
+通常各种优化都会打乱程序的结构，让调试工作变得无从着手。
+并且会打乱执行顺序，依赖内存操作顺序的程序需要做相关处理才能确保程序的正确性。
+-O0： 不做任何优化，这是默认的编译选项。
+-O和-O1： 对程序做部分编译优化，对于大函数，优化编译占用稍微多的时间和相当大的内存。使用本项优化，编译器会尝试减小生成代码的尺寸，以及缩短执行时间，但并不执行需要占用大量编译时间的优化
+-O2优化能使程序的编译效率大大提升，从而减少程序的运行时间，达到优化的效果。
+
+点击url之后发生的过程
+客户端获取URL - > DNS解析 - > TCP连接 - >发送HTTP请求 - >服务器处理请求 - >返回报文 - >浏览器解析渲染页面 - > TCP断开连接
+二、代码
+N皇后问题
+https://leetcode-cn.com/problems/n-queens/
+n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+知识点：
+1.二维的初始化 vector<string> track(n,string(n,'.'));
+2.传参必须要加& 否则不会对原数进行修改，而且传参不能是空值
+3.比较全排列，区别在于需要一个row来确定到达了棋盘的第几行
+
+
+答案：
+class Solution {
+public:
+    vector<vector<string>> v;
+    vector<vector<string>> solveNQueens(int n) {    
+        vector<string> track(n,string(n,'.'));  
+        trackback(track,n,0);
+        return v;
+    }
+     bool isValid(int row, int col, vector<string>& track){
+        int n = track.size();
+        for(int i = 0; i < n;++i){
+            if(track[i][col] == 'Q') return false;
+        }
+        for(int i=row-1,j=col-1;i>=0&&j>=0;--i,--j){
+            if(track[i][j]=='Q') return false;
+        }
+        for(int i=row-1,j=col+1;i>=0&&j<n;--i,++j){
+            if(track[i][j]=='Q') return false;
+        }
+        return true;
+    }
+    void trackback(vector<string> track,int n,int row){
+        if(row == n){
+            v.push_back(track);
+            return;
+        }
+        for(int col = 0; col< n; ++col){
+            
+                if(!isValid(row,col,track)) {
+                    continue;
+                }
+
+                track[row][col] = 'Q';
+                trackback(track,n,row+1);
+                track[row][col] = '.';
+            }
+            
+            
+        }
+
+   
+
+};
+三、开源工作
+上传学习内容
