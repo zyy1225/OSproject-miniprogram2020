@@ -1,0 +1,114 @@
+一、基础知识
+回顾排序算法的复杂度
+
+
+使用c++ sort函数的时候还可以自己定义比较方式
+定义从大到小
+bool cmp(int a,int b){
+　　return a>b;
+}
+定义比较结构体中的元素
+bool cmp(Student a,Student b){
+　　if(a.math >b.math )
+ 　　	return a.math <b.math ;//按math从小到大排序 
+ 　 else if(a.math ==b.math )
+　		return a.english>b.english ; //math相等，按endlish从大到小排序
+ }
+二、代码
+使用网络爬虫爬取工程院院士和科学院院士的个人主页以及百度百科并生成excel表格
+下面是部分代码：
+import urllib.request
+import re
+from urllib.request import quote
+import pandas as pd
+def getNameList():
+    with open("C:/Users/Administrator/Desktop/name.txt") as f:
+        lines = []
+        while True:
+
+            line = f.readline()
+            if not line:
+                break
+            line = line.strip('\n')
+            lines.append(line)
+    return lines
+
+def getRes(lines):
+    listall = []
+    for l in lines:
+        dict = {}
+        dict['name'] = l
+        # print(l)
+        l = quote(l, safe=";/?:@&=+$,", encoding="utf-8")#
+        #中文编码 将中文变成码
+        #中文解码 ret3 = unquote(url3, encoding='utf-8') 将码变成中文
+        url = "https://baike.baidu.com/item/"
+        url = url + l
+
+        dict['url'] = url
+        # print(url)
+        webSourceCode = urllib.request.urlopen(url).read().decode("utf-8", "ignore")
+
+
+        imgRe0 = re.compile(r'<a nslog-type="10002401"[\s\S]*?</a>')
+        imgRe1 = imgRe0.findall(webSourceCode)
+
+        imgRe2 = re.compile(r'img src="(.*?)"')
+        try:
+            img = imgRe2.findall(imgRe1[0])[0]
+        except:
+            img = None
+
+        dict['image'] = img
+        # print(img)
+
+        contentsRe = re.compile(r'<div class="para" label-module="para">[\s\S]*?</div>')
+        contents = contentsRe.findall(webSourceCode)
+        # print(contents)
+        intros = ''
+        for content in contents:
+            rpcontent = re.sub(r'\<(.*?)\>','',content)
+            intro0 = re.sub(r'\[(.*?)\]', '', rpcontent)
+            intro0 = re.sub(r'\<[\s\S]*?\>', '', intro0)
+            intro0 = intro0.replace('\n', '')
+            intro0 = intro0.replace('&nbsp;', '')
+            # intro0 = intro0.strip('\n')
+            intros = intros + intro0
+
+        dict['introduction'] = intros
+        # print(intros)
+        listall.append(dict)
+
+    return listall
+
+
+def toExcel(listall):
+
+    pf = pd.DataFrame((listall))
+    # 指定字段顺序
+    order = ['name', 'url','image', 'introduction']
+    pf = pf[order]
+    # 将列名替换为中文
+    columns_map = {
+        'name': '姓名',
+        'url': '百科地址',
+        'image': '照片',
+        'introduction': '简介',
+    }
+    pf.rename(columns=columns_map, inplace=True)
+    # 指定生成的Excel表格名称
+    file_path = pd.ExcelWriter('C:/Users/Administrator/Desktop/gcbaike.xlsx')
+    # 替换空单元格
+    pf.fillna(' ', inplace=True)
+    # 输出
+    pf.to_excel(file_path, encoding='utf-8', index=False)
+    # 保存表格
+    file_path.save()
+
+
+if __name__ == '__main__':
+    lines = getNameList()
+    listall = getRes(lines)
+    toExcel(listall)
+三、开源学习
+上传今日学习任务
